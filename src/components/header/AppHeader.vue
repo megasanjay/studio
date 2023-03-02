@@ -11,8 +11,8 @@ const development = process.env.NODE_ENV === "development";
   <header :class="{ 'debug-screens': development }">
     <n-space justify="space-between" align="center" class="pl-4 pr-2">
       <RouterLink to="/">
-        <h1 class="relative top-0 left-0 p-2 text-4xl font-black text-[#565656]">
-          <span class="text-4xl font-black text-primary-900"> AI Gallery Studio</span>
+        <h1 class="relative top-0 left-0 p-2 text-4xl font-black text-slate-600">
+          AI-Gallery Studio
         </h1>
       </RouterLink>
 

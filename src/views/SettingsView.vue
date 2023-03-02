@@ -1,69 +1,77 @@
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import type { FormInst } from "naive-ui";
-import { NButton, NForm, NFormItem, NInput } from "naive-ui";
+import { NButton, NCard, NFormItem, NInput } from "naive-ui";
 import { ref } from "vue";
 
 const formRef = ref<FormInst | null>(null);
 
-const formValue = ref({
-  phone: "",
-  user: {
-    name: "",
-    age: "",
-  },
-});
+const ghtoken = ref("");
 
 const rules = {
-  phone: {
-    message: "Please input your number",
+  ghtoken: {
     required: true,
-    trigger: ["input"],
-  },
-  user: {
-    name: {
-      message: "Please input your name",
-      required: true,
-      trigger: "blur",
-    },
-    age: {
-      message: "Please input your age",
-      required: true,
-      trigger: ["input", "blur"],
+    trigger: ["input", "blur"],
+    validator() {
+      if (ghtoken.value !== "ghp_xxx") {
+        return new Error("Please add your GitHub token");
+      }
     },
   },
 };
 
-const handleValidateClick = (e: MouseEvent) => {
-  e.preventDefault();
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      console.log("Valid");
-    } else {
-      console.log(errors);
-      console.log("Invalid");
+const pasteFromClipboard = (type: string) => {
+  navigator.clipboard.readText().then((text) => {
+    if (type === "ghtoken") {
+      ghtoken.value = text;
     }
   });
+};
+
+const save = (type: string) => {
+  if (type === "ghtoken") {
+    localStorage.setItem("ghtoken", ghtoken.value);
+  }
 };
 </script>
 
 <template>
   <div class="flex flex-col">
-    <h1 class="mb-8">Settings</h1>
+    <h1 class="my-6 text-slate-700">Settings</h1>
 
-    <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="large">
-      <n-form-item label="Name" path="user.name">
-        <n-input v-model:value="formValue.user.name" placeholder="Input Name" />
+    <n-card title="GitHub" class="mb-6">
+      <n-form-item label="Access Token" path="ghtoken" size="large" :rule="rules.ghtoken">
+        <n-input v-model:value="ghtoken" placeholder="ghp_xxx" />
+        <n-button class="ml-2" @click="pasteFromClipboard('ghtoken')">
+          <Icon icon="zondicons:paste" />
+        </n-button>
+        <n-button class="ml-2" @click="save('ghtoken')">
+          <Icon icon="material-symbols:save" />
+        </n-button>
       </n-form-item>
-      <n-form-item label="Age" path="user.age">
-        <n-input v-model:value="formValue.user.age" placeholder="Input Age" />
+
+      <n-form-item label="Repository" path="ghtoken" size="large" :rule="rules.ghtoken">
+        <n-input v-model:value="ghtoken" placeholder="megasanjay/aigallery" />
+        <n-button class="ml-2" @click="pasteFromClipboard('ghtoken')">
+          <Icon icon="zondicons:paste" />
+        </n-button>
+        <n-button class="ml-2" @click="save('ghtoken')">
+          <Icon icon="material-symbols:save" />
+        </n-button>
       </n-form-item>
-      <n-form-item label="Phone" path="phone">
-        <n-input v-model:value="formValue.phone" placeholder="Phone Number" />
+    </n-card>
+
+    <n-card title="Database">
+      <n-form-item label="Access URI" path="ghtoken" size="large" :rule="rules.ghtoken">
+        <n-input v-model:value="ghtoken" placeholder="ghp_xxx" />
+        <n-button class="ml-2" @click="pasteFromClipboard('ghtoken')">
+          <Icon icon="zondicons:paste" />
+        </n-button>
+        <n-button class="ml-2" @click="save('ghtoken')">
+          <Icon icon="material-symbols:save" />
+        </n-button>
       </n-form-item>
-      <n-form-item>
-        <n-button @click="handleValidateClick"> Validate </n-button>
-      </n-form-item>
-    </n-form>
+    </n-card>
   </div>
 </template>
 
