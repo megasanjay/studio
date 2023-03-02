@@ -12,7 +12,9 @@ import AppHeader from "./components/header/AppHeader.vue";
     <n-space vertical size="large">
       <n-layout has-sider>
         <n-layout-content class="h-[calc(100vh-56px)] pl-6 pt-5 pb-3">
-          <RouterView />
+          <main class="mx-auto max-w-screen-2xl">
+            <RouterView />
+          </main>
         </n-layout-content>
       </n-layout>
     </n-space>
