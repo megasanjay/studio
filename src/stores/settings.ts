@@ -1,12 +1,28 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
-export const useSettingsStore = defineStore("settings", () => {
-  const count = ref(0);
-  const doubleCount = computed(() => count.value * 2);
-  function increment() {
-    count.value++;
+export const useSettingsStore = defineStore(
+  "settings",
+  () => {
+    const GithubToken = ref("");
+    const GithubRepository = ref("");
+
+    const setGithubToken = (token: string) => {
+      GithubToken.value = token;
+    };
+
+    const setGithubRepository = (repository: string) => {
+      GithubRepository.value = repository;
+    };
+
+    return {
+      GithubRepository,
+      GithubToken,
+      setGithubRepository,
+      setGithubToken,
+    };
+  },
+  {
+    persist: { storage: localStorage },
   }
-
-  return { count, doubleCount, increment };
-});
+);

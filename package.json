@@ -2,6 +2,7 @@
   "name": "studio",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
     "build": "run-p type-check build-only",
@@ -28,6 +29,12 @@
   },
   "dependencies": {
     "@iconify/vue": "^4.1.0",
+    "@vercel/node": "^2.9.10",
+    "axios": "^1.3.4",
+    "dayjs": "^1.11.7",
+    "mongo-sanitize": "^1.1.0",
+    "mongodb": "^5.1.0",
+    "nanoid": "^4.0.1",
     "pinia": "^2.0.32",
     "pinia-plugin-persistedstate": "^3.1.0",
     "vue": "^3.2.47",
@@ -40,6 +47,7 @@
     "@fairdataihub/config": "^2.2.1",
     "@rushstack/eslint-patch": "^1.2.0",
     "@tailwindcss/typography": "^0.5.9",
+    "@types/mongo-sanitize": "^1.0.1",
     "@types/node": "^18.14.3",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vitejs/plugin-vue-jsx": "^3.0.0",
