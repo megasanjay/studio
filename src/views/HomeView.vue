@@ -222,7 +222,7 @@ const addToGallery = (e: MouseEvent) => {
         />
       </n-form-item>
 
-      <n-form-item label="Image URL:" path="imageurl">
+      <n-form-item label="Image:" path="imageurl">
         <n-upload ref="upload" :default-upload="false" @change="handleChange">
           <n-button>Select File</n-button>
         </n-upload>
