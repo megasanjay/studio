@@ -107,9 +107,29 @@ const addToGallery = (e: MouseEvent) => {
 
       uploadingToGithub.value = true;
 
+      const imageContent = ref(image.value.base64);
+
+      const imageFormats = [
+        "data:image/png;base64,",
+        "data:image/jpeg;base64,",
+        "data:image/jpg;base64,",
+        "data:image/gif;base64,",
+        "data:image/webp;base64,",
+        "data:image/svg+xml;base64,",
+        "data:image/tiff;base64,",
+        "data:image/bmp;base64,",
+      ];
+
+      // clean out the image format from the base64 string
+      imageFormats.forEach((format) => {
+        if (imageContent.value.startsWith(format)) {
+          imageContent.value = imageContent.value.replace(format, "");
+        }
+      });
+
       const githubResponse = await axios({
         data: {
-          content: image.value.base64.replace("data:image/png;base64,", ""),
+          content: imageContent.value,
           message: "feat: :sparkles: Add image to gallery",
         },
         headers: {
