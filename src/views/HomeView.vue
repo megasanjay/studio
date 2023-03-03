@@ -11,7 +11,7 @@ import { useSettingsStore } from "@/stores/settings";
 const settingsStore = useSettingsStore();
 const { error, info, success } = useMessage();
 
-const uploadingToGithub = ref(true);
+const uploadingToGithub = ref(false);
 const savingInDatabase = ref(false);
 const submitting = ref(false);
 const formRef = ref<FormInst | null>(null);
