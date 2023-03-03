@@ -2,6 +2,7 @@
 import { NLayout, NLayoutContent, NMessageProvider, NSpace } from "naive-ui";
 import { RouterView } from "vue-router";
 
+import AppFooter from "./components/footer/AppFooter.vue";
 import AppHeader from "./components/header/AppHeader.vue";
 </script>
 
@@ -18,6 +19,8 @@ import AppHeader from "./components/header/AppHeader.vue";
         </n-layout-content>
       </n-layout>
     </n-space>
+
+    <AppFooter />
   </n-message-provider>
 </template>
 
