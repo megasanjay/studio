@@ -11,7 +11,7 @@ import { useSettingsStore } from "@/stores/settings";
 const settingsStore = useSettingsStore();
 const { error, info, success } = useMessage();
 
-const uploadingToGithub = ref(false);
+const uploadingToGithub = ref(true);
 const savingInDatabase = ref(false);
 const submitting = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -257,10 +257,10 @@ const addToGallery = (e: MouseEvent) => {
       </n-form-item>
     </n-form>
 
-    <div class="fixed right-2 bottom-2 h-[150px] w-[150px]" v-if="uploadingToGithub">
+    <div class="fixed right-2 bottom-[100px] h-[150px] w-[150px]" v-if="uploadingToGithub">
       <Vue3Lottie animationLink="https://assets3.lottiefiles.com/packages/lf20_xrloheoi.json" />
     </div>
-    <div class="fixed right-2 bottom-2 h-[150px] w-[150px]" v-if="savingInDatabase">
+    <div class="fixed right-2 bottom-[100px] h-[150px] w-[150px]" v-if="savingInDatabase">
       <Vue3Lottie animationLink="https://assets4.lottiefiles.com/packages/lf20_abgqow0v.json" />
     </div>
   </div>
