@@ -24,7 +24,7 @@ const image = ref({
 const formValue = ref({
   imageAuthor: "midjourney",
   imageId: nanoid(),
-  prompt: "asdsad",
+  prompt: "",
 });
 
 const rules = {
