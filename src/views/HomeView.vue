@@ -2,7 +2,7 @@
 import { Icon } from "@iconify/vue";
 import axios from "axios";
 import type { FormInst, UploadFileInfo } from "naive-ui";
-import { NButton, NForm, NFormItem, NInput, NSelect, NUpload, useMessage } from "naive-ui";
+import { NButton, NForm, NFormItem, NInput, NModal, NSelect, NUpload, useMessage } from "naive-ui";
 import { nanoid } from "nanoid";
 import { ref } from "vue";
 
@@ -15,6 +15,8 @@ const uploadingToGithub = ref(false);
 const savingInDatabase = ref(false);
 const submitting = ref(false);
 const formRef = ref<FormInst | null>(null);
+
+const showModal = ref(false);
 
 const image = ref({
   base64: "",
@@ -61,6 +63,10 @@ const pastePromptFromClipboard = async () => {
 
 const clearPrompt = () => {
   formValue.value.prompt = "";
+};
+
+const refreshPage = () => {
+  window.location.reload();
 };
 
 const handleChange = async (data: { fileList: UploadFileInfo[] }) => {
@@ -180,6 +186,7 @@ const addToGallery = (e: MouseEvent) => {
 
       if (apiResponse.status === 201) {
         success("Image saved in database");
+        showModal.value = true;
       } else {
         error("Error saving image in database");
 
@@ -276,6 +283,19 @@ const addToGallery = (e: MouseEvent) => {
         </n-button>
       </n-form-item>
     </n-form>
+
+    <n-modal
+      v-model:show="showModal"
+      :mask-closable="false"
+      transform-origin="center"
+      preset="dialog"
+      title="Upload Status"
+      content="Image added to gallery!"
+      positive-text="Upload another image"
+      negative-text="Close"
+      @positive-click="refreshPage"
+      @negative-click="refreshPage"
+    />
 
     <div class="fixed right-2 bottom-[100px] h-[150px] w-[150px]" v-if="uploadingToGithub">
       <Vue3Lottie animationLink="https://assets3.lottiefiles.com/packages/lf20_xrloheoi.json" />
