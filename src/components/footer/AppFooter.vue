@@ -21,7 +21,6 @@ const development = process.env.NODE_ENV === "development";
       target="_blank"
       rel="noopener noreferrer"
     >
-      Powered by
       <img
         src="https://www.datocms-assets.com/31049/1618983297-powered-by-vercel.svg"
         alt="Vercel Logo"
