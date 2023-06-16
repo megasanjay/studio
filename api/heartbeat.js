@@ -18,11 +18,9 @@ if (!process.env.DATABASE_KEY) {
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB;
 
-// Create a new MongoClient
-const client = new MongoClient(uri);
-
 const heartbeat = async (request, response) => {
-  console.log(request.method);
+  // Create a new MongoClient
+  const client = new MongoClient(uri);
 
   if (request.method === "POST") {
     if ("body" in request) {
@@ -48,18 +46,20 @@ const heartbeat = async (request, response) => {
         const result = await collection.insertOne(data);
 
         // delete the oldest heartbeat
-        // const heartbeatCount = await collection.countDocuments();
+        const heartbeatCount = await collection.countDocuments();
 
-        // if (heartbeatCount > 20) {
-        //   const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
+        if (heartbeatCount > 20) {
+          const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
 
-        //   await collection.deleteOne({ _id: oldestHeartbeat._id });
-        // }
+          await collection.deleteOne({ _id: oldestHeartbeat._id });
+        }
 
         response.status(201).json({ result: result });
       } catch (error) {
         response.status(500).json({ error: error });
       }
+
+      await client.close();
 
       return;
     }
