@@ -39,52 +39,50 @@ const allowCors = (fn) => async (req, res) => {
 };
 
 const handler = async (request, response) => {
-  // console.log(request.method);
+  console.log(request.method);
 
-  // if (request.method === "POST") {
-  if ("body" in request) {
-    const sanitizedBody = sanitize(request.body);
+  if (request.method === "POST") {
+    if ("body" in request) {
+      const sanitizedBody = sanitize(request.body);
 
-    const { dbKey } = sanitizedBody;
+      const { dbKey } = sanitizedBody;
 
-    if (dbKey !== process.env.DATABASE_KEY) {
-      response.status(401).json({ error: "Unauthorized" });
-      return;
-    }
-
-    try {
-      await client.connect();
-
-      const database = client.db(dbName);
-      const collection = database.collection("heartbeats");
-
-      const result = await collection.insertOne({
-        timestamp: dayjs().unix(),
-      });
-
-      // delete the oldest heartbeat
-
-      const heartbeatCount = await collection.countDocuments();
-
-      if (heartbeatCount > 20) {
-        const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
-
-        await collection.deleteOne({ _id: oldestHeartbeat._id });
+      if (dbKey !== process.env.DATABASE_KEY) {
+        response.status(401).json({ error: "Unauthorized" });
+        return;
       }
 
-      response.status(201).json({ result: result });
-    } catch (error) {
-      response.status(500).json({ error: error });
-    }
+      try {
+        await client.connect();
 
-    return;
+        const database = client.db(dbName);
+        const collection = database.collection("heartbeats");
+
+        const result = await collection.insertOne({
+          timestamp: dayjs().unix(),
+        });
+
+        // delete the oldest heartbeat
+
+        const heartbeatCount = await collection.countDocuments();
+
+        if (heartbeatCount > 20) {
+          const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
+
+          await collection.deleteOne({ _id: oldestHeartbeat._id });
+        }
+
+        response.status(201).json({ result: result });
+      } catch (error) {
+        response.status(500).json({ error: error });
+      }
+
+      return;
+    }
   } else {
-    response.status(400).json({ error: "Bad request" });
+    response.status(405).json({ error: "Method not allowed" });
+    return;
   }
-  // } else {
-  //   response.status(405).json({ error: "Method not allowed" });
-  //   return;
-  // }
 };
 
 const heartbeat = allowCors(handler);
