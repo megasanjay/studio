@@ -111,6 +111,12 @@ const addToGallery = (e: MouseEvent) => {
         return;
       }
 
+      if (settingsStore.DatabaseKey === "") {
+        error("No database key found...");
+        submitting.value = false;
+        return;
+      }
+
       uploadingToGithub.value = true;
 
       const imageContent = ref(image.value.base64);
@@ -170,6 +176,8 @@ const addToGallery = (e: MouseEvent) => {
 
       const apiResponse = await axios({
         data: {
+          dbKey: settingsStore.DatabaseKey,
+
           extension: image.value.extension,
           imageAuthor: formValue.value.imageAuthor,
           imageId: formValue.value.imageId,

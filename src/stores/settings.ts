@@ -7,6 +7,8 @@ export const useSettingsStore = defineStore(
     const GithubToken = ref("");
     const GithubRepository = ref("");
 
+    const DatabaseKey = ref("");
+
     const setGithubToken = (token: string) => {
       GithubToken.value = token;
     };
@@ -15,9 +17,15 @@ export const useSettingsStore = defineStore(
       GithubRepository.value = repository;
     };
 
+    const setDatabaseKey = (key: string) => {
+      DatabaseKey.value = key;
+    };
+
     return {
+      DatabaseKey,
       GithubRepository,
       GithubToken,
+      setDatabaseKey,
       setGithubRepository,
       setGithubToken,
     };

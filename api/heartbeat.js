@@ -21,7 +21,7 @@ const dbName = process.env.MONGODB_DB;
 // Create a new MongoClient
 const client = new MongoClient(uri);
 
-const gallery = async (request, response) => {
+const heartbeat = async (request, response) => {
   if (request.method === "POST") {
     if ("body" in request) {
       const sanitizedBody = sanitize(request.body);
@@ -33,23 +33,25 @@ const gallery = async (request, response) => {
         return;
       }
 
-      const now = dayjs().unix();
-
-      const data = {
-        extension: sanitizedBody.extension,
-        imageAuthor: sanitizedBody.imageAuthor,
-        imageId: sanitizedBody.imageId,
-        prompt: sanitizedBody.prompt,
-        timestamp: now,
-      };
-
       try {
         await client.connect();
 
         const database = client.db(dbName);
-        const collection = database.collection("AIGallery");
+        const collection = database.collection("heartbeats");
 
-        const result = await collection.insertOne(data);
+        const result = await collection.insertOne({
+          timestamp: dayjs().unix(),
+        });
+
+        // delete the oldest heartbeat
+
+        const heartbeatCount = await collection.countDocuments();
+
+        if (heartbeatCount > 20) {
+          const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
+
+          await collection.deleteOne({ _id: oldestHeartbeat._id });
+        }
 
         response.status(201).json({ result: result });
       } catch (error) {
@@ -64,4 +66,4 @@ const gallery = async (request, response) => {
   }
 };
 
-export default gallery;
+export default heartbeat;

@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import axios from "axios";
-import { NButton, NCard, NFormItem, NInput } from "naive-ui";
+import { NButton, NCard, NFormItem, NInput, useMessage } from "naive-ui";
 import { ref } from "vue";
 
 import { useSettingsStore } from "@/stores/settings";
 
 const settingsStore = useSettingsStore();
+const { error, info, success } = useMessage();
 
 const ghtoken = ref("");
 const ghrepository = ref("");
+
+const dbkey = ref("");
 
 if (settingsStore.GithubToken !== "") {
   console.log("GitHub token found...");
@@ -25,7 +28,25 @@ if (settingsStore.GithubRepository !== "") {
   console.log("No GitHub repository found...");
 }
 
+if (settingsStore.DatabaseKey !== "") {
+  console.log("Database key found...");
+  dbkey.value = settingsStore.DatabaseKey;
+} else {
+  console.log("No Database key found...");
+}
+
 const rules: any = {
+  dbkey: {
+    required: true,
+    trigger: ["input", "blur"],
+    async validator() {
+      if (dbkey.value == "") {
+        return new Error("Please add the database key");
+      } else {
+        return true;
+      }
+    },
+  },
   ghrepository: {
     required: true,
     trigger: ["input", "blur"],
@@ -75,17 +96,19 @@ const rules: any = {
   },
 };
 
-const pasteFromClipboard = (field: any) => {
-  navigator.clipboard.readText().then((text) => {
-    field.value = text;
-  });
-};
-
 const save = (field: string) => {
   if (field === "ghtoken") {
     settingsStore.GithubToken = ghtoken.value;
+
+    success("GitHub token saved");
   } else if (field === "ghrepository") {
     settingsStore.GithubRepository = ghrepository.value;
+
+    success("GitHub repository saved");
+  } else if (field === "dbkey") {
+    settingsStore.DatabaseKey = dbkey.value;
+
+    success("Access key saved");
   }
 };
 
@@ -93,9 +116,18 @@ const clear = (field: string) => {
   if (field === "ghtoken") {
     settingsStore.setGithubToken("");
     ghtoken.value = "";
+
+    success("GitHub token cleared");
   } else if (field === "ghrepository") {
     settingsStore.setGithubRepository("");
     ghrepository.value = "";
+
+    success("GitHub repository cleared");
+  } else if (field === "dbkey") {
+    settingsStore.setDatabaseKey("");
+    dbkey.value = "";
+
+    success("Access key cleared");
   }
 };
 </script>
@@ -108,9 +140,6 @@ const clear = (field: string) => {
       <n-form-item label="Access Token" path="ghtoken" size="large" :rule="rules.ghtoken">
         <n-input v-model:value="ghtoken" placeholder="ghp_xxx" />
 
-        <n-button class="ml-2" @click="pasteFromClipboard(ghtoken)">
-          <Icon icon="zondicons:paste" />
-        </n-button>
         <n-button class="ml-2" @click="save('ghtoken')">
           <Icon icon="material-symbols:save" />
         </n-button>
@@ -122,13 +151,23 @@ const clear = (field: string) => {
       <n-form-item label="Repository" path="ghrepository" size="large" :rule="rules.ghrepository">
         <n-input v-model:value="ghrepository" placeholder="megasanjay/aigallery" />
 
-        <n-button class="ml-2" @click="pasteFromClipboard(ghrepository)">
-          <Icon icon="zondicons:paste" />
-        </n-button>
         <n-button class="ml-2" @click="save('ghrepository')">
           <Icon icon="material-symbols:save" />
         </n-button>
         <n-button class="ml-2" @click="clear('ghrepository')">
+          <Icon icon="mdi:clear-octagon" />
+        </n-button>
+      </n-form-item>
+    </n-card>
+
+    <n-card title="Database" class="mb-6">
+      <n-form-item label="Access Key" path="dbkey" size="large" :rule="rules.dbkey">
+        <n-input v-model:value="dbkey" placeholder="d6e586c5e4f7ba688b26d558f8f196d9" />
+
+        <n-button class="ml-2" @click="save('dbkey')">
+          <Icon icon="material-symbols:save" />
+        </n-button>
+        <n-button class="ml-2" @click="clear('dbkey')">
           <Icon icon="mdi:clear-octagon" />
         </n-button>
       </n-form-item>
