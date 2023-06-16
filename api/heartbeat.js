@@ -22,6 +22,8 @@ const dbName = process.env.MONGODB_DB;
 const client = new MongoClient(uri);
 
 const heartbeat = async (request, response) => {
+  console.log(request.method);
+
   if (request.method === "POST") {
     if ("body" in request) {
       const sanitizedBody = sanitize(request.body);
