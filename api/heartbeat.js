@@ -41,9 +41,11 @@ const heartbeat = async (request, response) => {
         const database = client.db(dbName);
         const collection = database.collection("heartbeats");
 
-        const result = await collection.insertOne({
+        const data = {
           timestamp: dayjs().unix(),
-        });
+        };
+
+        const result = await collection.insertOne(data);
 
         // delete the oldest heartbeat
         // const heartbeatCount = await collection.countDocuments();
