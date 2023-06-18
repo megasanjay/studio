@@ -18,9 +18,10 @@ if (!process.env.DATABASE_KEY) {
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB;
 
+const client = new MongoClient(uri);
+
 const heartbeat = async (request, response) => {
   // Create a new MongoClient
-  const client = new MongoClient(uri);
 
   if (request.method === "POST") {
     if ("body" in request) {
@@ -34,7 +35,7 @@ const heartbeat = async (request, response) => {
       }
 
       try {
-        // await client.connect();
+        await client.connect();
 
         // const database = client.db(dbName);
         // const collection = database.collection("heartbeats");
