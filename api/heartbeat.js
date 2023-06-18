@@ -34,10 +34,10 @@ const heartbeat = async (request, response) => {
       }
 
       try {
-        await client.connect();
+        // await client.connect();
 
-        const database = client.db(dbName);
-        const collection = database.collection("heartbeats");
+        // const database = client.db(dbName);
+        // const collection = database.collection("heartbeats");
 
         const data = {
           timestamp: dayjs().unix(),
