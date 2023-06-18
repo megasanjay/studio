@@ -37,25 +37,25 @@ const heartbeat = async (request, response) => {
       try {
         await client.connect();
 
-        // const database = client.db(dbName);
-        // const collection = database.collection("heartbeats");
+        const database = client.db(dbName);
+        const collection = database.collection("heartbeats");
 
         const data = {
           timestamp: dayjs().unix(),
         };
 
-        // const result = await collection.insertOne(data);
+        const result = await collection.insertOne(data);
 
         // delete the oldest heartbeat
-        // const heartbeatCount = await collection.countDocuments();
+        const heartbeatCount = await collection.countDocuments();
 
-        // if (heartbeatCount > 20) {
-        //   const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
+        if (heartbeatCount > 20) {
+          const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
 
-        //   await collection.deleteOne({ _id: oldestHeartbeat._id });
-        // }
+          await collection.deleteOne({ _id: oldestHeartbeat._id });
+        }
 
-        response.status(201).json({ data });
+        response.status(201).json({ result });
       } catch (error) {
         response.status(500).json({ error: error });
       }
@@ -69,7 +69,5 @@ const heartbeat = async (request, response) => {
     return;
   }
 };
-
-// const heartbeat = allowCors(handler);
 
 export default heartbeat;
