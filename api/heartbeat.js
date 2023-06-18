@@ -46,7 +46,7 @@ const heartbeat = async (request, response) => {
         // const result = await collection.insertOne(data);
 
         // delete the oldest heartbeat
-        const heartbeatCount = await collection.countDocuments();
+        // const heartbeatCount = await collection.countDocuments();
 
         // if (heartbeatCount > 20) {
         //   const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
@@ -54,7 +54,7 @@ const heartbeat = async (request, response) => {
         //   await collection.deleteOne({ _id: oldestHeartbeat._id });
         // }
 
-        response.status(201).json({ heartbeatCount });
+        response.status(201).json({ data });
       } catch (error) {
         response.status(500).json({ error: error });
       }
