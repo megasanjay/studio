@@ -43,18 +43,18 @@ const heartbeat = async (request, response) => {
           timestamp: dayjs().unix(),
         };
 
-        const result = await collection.insertOne(data);
+        // const result = await collection.insertOne(data);
 
         // delete the oldest heartbeat
         const heartbeatCount = await collection.countDocuments();
 
-        if (heartbeatCount > 20) {
-          const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
+        // if (heartbeatCount > 20) {
+        //   const oldestHeartbeat = await collection.findOne({}, { sort: { timestamp: 1 } });
 
-          await collection.deleteOne({ _id: oldestHeartbeat._id });
-        }
+        //   await collection.deleteOne({ _id: oldestHeartbeat._id });
+        // }
 
-        response.status(201).json({ result: result });
+        response.status(201).json({ heartbeatCount });
       } catch (error) {
         response.status(500).json({ error: error });
       }
