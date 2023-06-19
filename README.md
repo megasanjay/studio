@@ -1,46 +1,80 @@
-# studio
+# Kato
 
-This template should help get you started developing with Vue 3 in Vite.
+Empowering Your Productivity Journey, One Step at a Time!
 
-## Recommended IDE Setup
+## Overview
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Kato is a free and evolving alternative to the Momentum app. Kato is a productivity and habit-tracking application designed to help users stay focused, set goals, and manage their time effectively. Please note that Kato is still a work in progress, but it aims to provide a comparable experience to existing productivity apps.
 
-## Type Support for `.vue` Imports in TS
+Kato replaces the default new tab page with a visually pleasing dashboard. It offers a clean and intuitive design, featuring a daily inspirational quote, a to-do list, and a weather widget.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+While Kato is under development, it focuses on providing a goal-setting and habit-tracking system. Users can set daily or weekly goals, monitor their progress, and receive reminders to stay on track. Additionally, Kato intends to incorporate a "Focus" mode in the future to create an optimal work environment.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+As a work in progress, it strives to continually improve and refine its features based on user feedback and evolving needs. Stay tuned for updates as Kato evolves into a robust productivity tool.
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+## Features
 
-## Customize configuration
+- Daily inspirational quote (coming soon)
+- To-do list (coming soon)
+- Weather widget (coming soon)
+- Goal-setting and habit-tracking system (coming soon)
+- Focus mode (coming soon)
+- Beautiful background images (coming soon)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Technologies
 
-## Project Setup
+This app is built with the following technologies:
 
-```sh
+- [Nuxt 3](https://nuxt.com/)
+- [Naive UI](https://www.naiveui.com/en-US/os-theme)
+- [Fastify](https://www.fastify.io/)
+- [Meilisearch](https://www.meilisearch.com/)
+- [Supabase](https://supabase.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [ESLint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+
+## Setup
+
+Make sure to install the dependencies:
+
+```bash
+# yarn
+yarn install
+
+# npm
 npm install
+
+# pnpm
+pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+## Development Server
 
-```sh
+Start the development server on `http://localhost:3000`
+
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+## Production
 
-```sh
+Build the application for production:
+
+```bash
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+Locally preview production build:
 
-```sh
-npm run lint
+```bash
+npm run preview
 ```
+
+## Statistics
+
+Some information about the repository can be found below:
+
+![Alt](https://repobeats.axiom.co/api/embed/4919cd9279a43bdf72ddcdeab8c96c28b34c5c82.svg "Repobeats analytics image")

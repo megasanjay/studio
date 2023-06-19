@@ -1,37 +1,32 @@
-/* eslint-env node */
-require("@rushstack/eslint-patch/modern-module-resolution");
-
 module.exports = {
-  extends: [
-    "plugin:vue/vue3-essential",
-    "eslint:recommended",
-    "@vue/eslint-config-typescript",
-    "@vue/eslint-config-prettier",
-  ],
-  overrides: [],
-  parserOptions: {
-    ecmaVersion: "latest",
+  env: {
+    browser: true,
+    node: true,
   },
-  plugins: ["unused-imports", "simple-import-sort", "prettier", "sort-keys-custom-order"],
+  extends: [
+    "@nuxtjs/eslint-config-typescript",
+    "plugin:prettier/recommended",
+    "eslint-config-prettier",
+  ],
+  parser: "vue-eslint-parser",
+  parserOptions: {
+    parser: "@typescript-eslint/parser",
+  },
+  plugins: ["unused-imports", "sort-keys-custom-order"],
   root: true,
   rules: {
+    "@typescript-eslint/no-unused-vars": "off",
+
+    endOfLine: "off",
+
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-unused-vars": "off",
-    "prettier/prettier": [
-      "error",
-      {
-        endOfLine: "auto",
-      },
-    ],
-    "simple-import-sort/exports": "error",
-    "simple-import-sort/imports": "error",
-    // For JS objects sorting
+
     "sort-keys-custom-order/object-keys": [
       "error",
       { orderedKeys: ["id", "username", "name", "title", "50"] },
     ],
-    // For TS types sorting
+
     "sort-keys-custom-order/type-keys": [
       "error",
       { orderedKeys: ["id", "username", "name", "title", "50"] },

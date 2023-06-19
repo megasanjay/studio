@@ -1,19 +1,4 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "api"],
-  "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "esnext",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "types": ["node"]
-  },
-
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
 }
