@@ -19,8 +19,16 @@ if (!process.env.DATABASE_KEY) {
   );
 }
 
+if (!process.env.VERCEL_DEPLOY_HOOK) {
+  throw new Error(
+    "Please define the VERCEL_DEPLOY_HOOK environment variable inside .env"
+  );
+}
+
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB;
+
+const deployHook = process.env.VERCEL_DEPLOY_HOOK;
 
 // Create a new MongoClient
 const client = new MongoClient(uri);
@@ -83,7 +91,13 @@ export default defineEventHandler(async (event) => {
 
     const result = await collection.insertOne(data);
 
+    // trigger vercel deploy hook
+    fetch(deployHook, {
+      method: "POST",
+    });
+
     setResponseStatus(event, 201);
+
     return {
       message: "Successfully inserted the image into the database",
       result,
