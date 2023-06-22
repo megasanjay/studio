@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { MongoClient } from "mongodb";
+import { getPlaiceholder } from "plaiceholder";
+import probe from "probe-image-size";
 
 if (!process.env.MONGODB_URI) {
   throw new Error(
@@ -75,12 +77,25 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const imageURL = `https://cdn.jsdelivr.net/gh/megasanjay/aigallery/${imageId}.${extension}`;
+
+  const buffer = await fetch(imageURL).then(async (res) =>
+    Buffer.from(await res.arrayBuffer())
+  );
+
+  const { base64 } = await getPlaiceholder(buffer);
+
+  const { height, width } = await probe(imageURL);
+
   const data = {
+    blurDataURL: base64,
     extension,
+    height,
     imageAuthor,
     imageId,
     prompt,
     timestamp: Math.floor(Date.now() / 1000),
+    width,
   };
 
   try {
