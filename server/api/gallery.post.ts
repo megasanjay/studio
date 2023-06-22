@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { MongoClient } from "mongodb";
+import { getPlaiceholder } from "plaiceholder";
+import probe from "probe-image-size";
 
 if (!process.env.MONGODB_URI) {
   throw new Error(
@@ -19,8 +21,16 @@ if (!process.env.DATABASE_KEY) {
   );
 }
 
+if (!process.env.VERCEL_DEPLOY_HOOK) {
+  throw new Error(
+    "Please define the VERCEL_DEPLOY_HOOK environment variable inside .env"
+  );
+}
+
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB;
+
+const deployHook = process.env.VERCEL_DEPLOY_HOOK;
 
 // Create a new MongoClient
 const client = new MongoClient(uri);
@@ -67,12 +77,25 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const imageURL = `https://cdn.jsdelivr.net/gh/megasanjay/aigallery/${imageId}.${extension}`;
+
+  const buffer = await fetch(imageURL).then(async (res) =>
+    Buffer.from(await res.arrayBuffer())
+  );
+
+  const { base64 } = await getPlaiceholder(buffer);
+
+  const { height, width } = await probe(imageURL);
+
   const data = {
+    blurDataURL: base64,
     extension,
+    height,
     imageAuthor,
     imageId,
     prompt,
     timestamp: Math.floor(Date.now() / 1000),
+    width,
   };
 
   try {
@@ -83,7 +106,13 @@ export default defineEventHandler(async (event) => {
 
     const result = await collection.insertOne(data);
 
+    // trigger vercel deploy hook
+    fetch(deployHook, {
+      method: "POST",
+    });
+
     setResponseStatus(event, 201);
+
     return {
       message: "Successfully inserted the image into the database",
       result,
