@@ -2,6 +2,10 @@ import { z } from "zod";
 import { MongoClient } from "mongodb";
 import { getPlaiceholder } from "plaiceholder";
 import probe from "probe-image-size";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(timezone);
 
 if (!process.env.MONGODB_URI) {
   throw new Error(
@@ -87,6 +91,8 @@ export default defineEventHandler(async (event) => {
 
   const { height, width } = await probe(imageURL);
 
+  const timestamp = dayjs().tz("America/Los_Angeles").unix();
+
   const data = {
     blurDataURL: base64,
     extension,
@@ -94,7 +100,7 @@ export default defineEventHandler(async (event) => {
     imageAuthor,
     imageId,
     prompt,
-    timestamp: Math.floor(Date.now() / 1000),
+    timestamp,
     width,
   };
 

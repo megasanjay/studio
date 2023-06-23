@@ -235,7 +235,7 @@ const addToGallery = (e: MouseEvent) => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative px-6 py-8">
     <n-form
       ref="formRef"
       :label-width="140"

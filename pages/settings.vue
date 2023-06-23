@@ -133,7 +133,7 @@ const clear = (field: string) => {
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col p-4">
     <h1 class="my-6 text-slate-700">Settings</h1>
 
     <n-card title="GitHub" class="mb-6">
