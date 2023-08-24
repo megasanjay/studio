@@ -24,7 +24,8 @@ const image = ref({
 const formValue = ref({
   imageAuthor: "midjourney",
   imageId: nanoid(),
-  prompt: "",
+  prompt:
+    "**Clockpunk world, wide angle. A traveling geisha in a kimono with a shamisen wandering alone in the wilderness of gears can be seen in the distance. In the style of Shinichi Saito. The bright red sunset illuminates the hills of screws and gears and rivers of machine oil.** - <@1012081190347481108> (fast)",
 });
 
 const rules = {
@@ -57,6 +58,23 @@ const refreshImageId = () => {
 const pastePromptFromClipboard = async () => {
   const clipboardText = await navigator.clipboard.readText();
   formValue.value.prompt = clipboardText;
+};
+
+const transformPrompt = () => {
+  console.log("transforming prompt");
+
+  let prompt = formValue.value.prompt;
+
+  // remove the first two characters
+  prompt = prompt.substring(2);
+
+  // find the next two asterisks
+  const nextTwoAsterisks = prompt.indexOf("**");
+
+  // remove everything after
+  prompt = prompt.substring(0, nextTwoAsterisks);
+
+  formValue.value.prompt = prompt;
 };
 
 const clearPrompt = () => {
@@ -271,6 +289,15 @@ const addToGallery = (e: MouseEvent) => {
           v-model:value="formValue.prompt"
           placeholder="A rat in space"
         />
+
+        <Icon
+          name="icon-park-outline:modify"
+          width="30"
+          height="30"
+          class="ml-4 cursor-pointer text-slate-800 transition-colors hover:text-sky-700"
+          @click="transformPrompt"
+        />
+
         <Icon
           name="material-symbols:chat-paste-go"
           width="30"
@@ -278,6 +305,7 @@ const addToGallery = (e: MouseEvent) => {
           class="ml-4 cursor-pointer text-slate-800 transition-colors hover:text-sky-700"
           @click="pastePromptFromClipboard"
         />
+
         <Icon
           name="mdi:clear-octagon"
           width="30"

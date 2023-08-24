@@ -1,5 +1,6 @@
 node_modules
 *.log*
+.yarn
 .nuxt
 .nitro
 .cache
