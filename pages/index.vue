@@ -24,8 +24,7 @@ const image = ref({
 const formValue = ref({
   imageAuthor: "midjourney",
   imageId: nanoid(),
-  prompt:
-    "**Clockpunk world, wide angle. A traveling geisha in a kimono with a shamisen wandering alone in the wilderness of gears can be seen in the distance. In the style of Shinichi Saito. The bright red sunset illuminates the hills of screws and gears and rivers of machine oil.** - <@1012081190347481108> (fast)",
+  prompt: "",
 });
 
 const rules = {
