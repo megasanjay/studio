@@ -21,6 +21,8 @@ const image = ref({
   extension: "",
 });
 
+const formattedText = ref("");
+
 const formValue = ref({
   imageAuthor: "midjourney",
   imageId: nanoid(),
@@ -37,6 +39,11 @@ const rules = {
     message: "Please add an image ID",
     required: true,
     trigger: ["input"],
+  },
+  imageurl: {
+    message: "Please upload an image",
+    required: true,
+    trigger: ["change"],
   },
   prompt: {
     message: "Please add a prompt",
@@ -73,11 +80,14 @@ const transformPrompt = () => {
   // remove everything after
   prompt = prompt.substring(0, nextTwoAsterisks);
 
+  formattedText.value = prompt;
+
   formValue.value.prompt = prompt;
 };
 
 const clearPrompt = () => {
   formValue.value.prompt = "";
+  formattedText.value = "";
 };
 
 const refreshPage = () => {
@@ -268,13 +278,12 @@ const addToGallery = (e: MouseEvent) => {
           placeholder="ih-jpPi0JKX258J8Wf3N0"
           disabled
         />
-        <Icon
-          name="material-symbols:refresh"
-          width="30"
-          height="30"
-          class="ml-4 cursor-pointer text-slate-800 transition-colors hover:text-sky-700"
-          @click="refreshImageId"
-        />
+
+        <n-button secondary class="ml-4" type="warning" @click="refreshImageId">
+          <template #icon>
+            <Icon name="material-symbols:refresh" />
+          </template>
+        </n-button>
       </n-form-item>
 
       <n-form-item label="Image:" path="imageurl">
@@ -283,35 +292,44 @@ const addToGallery = (e: MouseEvent) => {
         </n-upload>
       </n-form-item>
 
-      <n-form-item label="Image Prompt:" path="prompt">
+      <n-form-item
+        label="Image Prompt:"
+        path="prompt"
+        :feedback="formattedText"
+      >
         <n-input
           v-model:value="formValue.prompt"
           placeholder="A rat in space"
         />
 
-        <Icon
-          name="icon-park-outline:modify"
-          width="30"
-          height="30"
-          class="ml-4 cursor-pointer text-slate-800 transition-colors hover:text-sky-700"
-          @click="transformPrompt"
-        />
+        <div class="ml-4 flex items-center space-x-4">
+          <n-button secondary type="info" @click="pastePromptFromClipboard">
+            <template #icon>
+              <Icon name="material-symbols:chat-paste-go" />
+            </template>
+          </n-button>
 
-        <Icon
-          name="material-symbols:chat-paste-go"
-          width="30"
-          height="30"
-          class="ml-4 cursor-pointer text-slate-800 transition-colors hover:text-sky-700"
-          @click="pastePromptFromClipboard"
-        />
+          <n-button
+            secondary
+            :disabled="formValue.prompt === ''"
+            @click="transformPrompt"
+          >
+            <template #icon>
+              <Icon name="icon-park-outline:modify" />
+            </template>
+          </n-button>
 
-        <Icon
-          name="mdi:clear-octagon"
-          width="30"
-          height="30"
-          class="ml-4 cursor-pointer text-slate-800 transition-colors hover:text-sky-700"
-          @click="clearPrompt"
-        />
+          <n-button
+            :disabled="formValue.prompt === ''"
+            type="error"
+            secondary
+            @click="clearPrompt"
+          >
+            <template #icon>
+              <Icon name="mdi:clear-octagon" />
+            </template>
+          </n-button>
+        </div>
       </n-form-item>
 
       <n-form-item label="Image Author:" path="imageAuthor">
@@ -328,6 +346,10 @@ const addToGallery = (e: MouseEvent) => {
           size="large"
           @click="addToGallery"
         >
+          <template #icon>
+            <Icon name="mdi:upload" />
+          </template>
+
           Add to Gallery
         </n-button>
       </n-form-item>

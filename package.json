@@ -53,5 +53,6 @@
     "validator": "^13.9.0",
     "vue3-lottie": "^2.7.0",
     "zod": "^3.21.4"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }
