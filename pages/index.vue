@@ -40,11 +40,6 @@ const rules = {
     required: true,
     trigger: ["input"],
   },
-  imageurl: {
-    message: "Please upload an image",
-    required: true,
-    trigger: ["change"],
-  },
   prompt: {
     message: "Please add a prompt",
     required: true,
